@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central dos Instrutores - Instrubot</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="background-overlay"></div>
+
+    <main class="app-container" id="mainContainer">
+        
+        <div class="blobs-container">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+            <div class="blob blob-3"></div>
+        </div>
+
+        <div class="glass-content">
+
+            <div id="startScreen" class="screen-section active">
+                <header class="header-container">
+                    <img src="assets/brasao.png" alt="Brasão Central" class="logo">
+                    <div class="title-wrapper">
+                        <h1 class="corporate-title">Central dos Instrutores</h1>
+                    </div>
+                </header>
+
+                <div class="menu-item-wrapper" onclick="iniciarInstrubot()">
+                    <div class="stick-figure-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="7" r="4"></circle>
+                            <path d="M5.5 21v-2a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v2"></path>
+                        </svg>
+                    </div>
+                    <div class="speech-bubble">
+                        Desejo acessar os SCRIPTS
+                    </div>
+                </div>
+                </div>
+
+            <div id="splitScreen" class="screen-section hidden">
+                
+                <section class="chat-panel">
+                    <div class="chat-header">
+                        <div class="chat-title">
+                            <span class="bot-avatar">🤖</span>
+                            <span>INSTRUBOT</span>
+                        </div>
+                        <div class="chat-controls">
+                            <button onclick="toggleTheme()" title="Mudar Tema">🌗</button>
+                            <button onclick="resetChat()" title="Reiniciar Conversa">🔄</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-messages" id="chatMessages">
+                        </div>
+
+                    <div class="chat-input-area" id="inputArea">
+                        </div>
+                </section>
+
+                <section class="script-panel" id="scriptPanel">
+                    <div class="script-content">
+                        <h2>SCRIPT EM DESENVOLVIMENTO</h2>
+                        <p id="scriptTitleDisplay">Aguardando seleção...</p>
+                    </div>
+                </section>
+
+            </div>
+
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

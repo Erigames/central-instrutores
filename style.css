@@ -1,0 +1,195 @@
+:root {
+    --azul-claro: #4facfe;
+    --azul-escuro: #00f2fe;
+    --preto: #0f0f10;
+    --branco: #ffffff;
+    --vidro-bg: rgba(255, 255, 255, 0.1);
+    --vidro-borda: rgba(255, 255, 255, 0.2);
+    --bot-msg-bg: rgba(255, 255, 255, 0.15);
+    --user-msg-bg: rgba(79, 172, 254, 0.3);
+    --fonte-principal: 'Inter', sans-serif;
+}
+
+/* Tema Claro (Ativado via JS) */
+body.light-mode {
+    --preto: #f0f2f5;
+    --branco: #333;
+    --vidro-bg: rgba(255, 255, 255, 0.6);
+    --vidro-borda: rgba(0, 0, 0, 0.1);
+    --bot-msg-bg: rgba(0, 0, 0, 0.05);
+    --user-msg-bg: rgba(79, 172, 254, 0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--fonte-principal); }
+
+body {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--preto);
+    transition: background-color 0.5s;
+}
+
+/* --- FUNDO --- */
+.background-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('assets/bg-site.jpeg');
+    background-size: cover; background-position: center;
+    opacity: 0.4; z-index: -1;
+}
+
+/* --- CONTAINER PRINCIPAL (A Mágica da Transformação) --- */
+.app-container {
+    position: relative;
+    width: 450px; /* Largura inicial (Quadrado) */
+    height: 600px;
+    border-radius: 30px;
+    background: var(--vidro-bg);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--vidro-borda);
+    box-shadow: 0 0 40px rgba(0, 150, 255, 0.2);
+    overflow: hidden;
+    transition: all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Efeito elástico */
+}
+
+/* Estado Expandido (Tela Dividida) */
+.app-container.expanded {
+    width: 95vw;
+    height: 90vh;
+    border-radius: 20px;
+}
+
+/* --- BOLAS (BACKGROUND ANIMADO) --- */
+.blobs-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.blob { position: absolute; border-radius: 50%; filter: blur(40px); opacity: 0.6; animation: moveBlobs 10s infinite alternate; }
+.blob-1 { width: 150px; height: 150px; background: var(--azul-claro); top: 10%; left: 10%; }
+.blob-2 { width: 200px; height: 200px; background: var(--azul-escuro); bottom: 20%; right: 10%; }
+.blob-3 { width: 120px; height: 120px; background: #ffffff; bottom: 10%; left: 30%; }
+
+@keyframes moveBlobs {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(30px, -30px); }
+}
+
+/* --- CONTEÚDO --- */
+.glass-content { position: relative; z-index: 1; height: 100%; width: 100%; display: flex; flex-direction: column; }
+
+/* Telas (Seções) */
+.screen-section {
+    position: absolute; width: 100%; height: 100%;
+    transition: opacity 0.5s, transform 0.5s;
+    opacity: 0; pointer-events: none; /* Escondido por padrão */
+    display: flex; flex-direction: column;
+}
+
+.screen-section.active {
+    opacity: 1; pointer-events: all; transform: scale(1);
+}
+
+.screen-section.hidden {
+    display: none; /* Remove do fluxo */
+}
+
+/* --- TELA INICIAL (MENU) --- */
+#startScreen { align-items: center; justify-content: center; padding: 40px; }
+
+.header-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 50px; }
+.logo { width: 90px; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
+.corporate-title { font-size: 20px; font-weight: 800; text-transform: uppercase; color: var(--branco); letter-spacing: 2px; text-align: center; }
+
+/* Botão Menu (Boneco + Balão) */
+.menu-item-wrapper {
+    display: flex; align-items: center; gap: 15px;
+    cursor: pointer; transition: transform 0.3s;
+}
+.menu-item-wrapper:hover { transform: scale(1.05); }
+
+.stick-figure-icon {
+    width: 50px; height: 50px;
+    color: var(--branco);
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%; padding: 10px;
+    border: 1px solid var(--azul-claro);
+}
+.speech-bubble {
+    background: var(--branco); color: var(--preto);
+    padding: 10px 20px; border-radius: 20px 20px 20px 0;
+    font-weight: bold; font-size: 14px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* --- TELA DIVIDIDA (CHAT + SCRIPT) --- */
+#splitScreen { flex-direction: row; }
+
+/* Lado Esquerdo (Chat) */
+.chat-panel {
+    width: 30%; /* Chat ocupa 30% quando expandido */
+    height: 100%;
+    border-right: 1px solid var(--vidro-borda);
+    display: flex; flex-direction: column;
+    background: rgba(0,0,0,0.2);
+    transition: width 0.8s;
+}
+/* Quando ainda não expandiu (Passo inicial do chat) */
+.app-container:not(.expanded) .chat-panel { width: 100%; border: none; }
+
+.chat-header {
+    padding: 15px; border-bottom: 1px solid var(--vidro-borda);
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--branco);
+}
+.chat-title { font-weight: 800; letter-spacing: 1px; display: flex; gap: 10px; align-items: center; }
+.chat-controls button { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--branco); margin-left: 10px; transition: transform 0.2s;}
+.chat-controls button:hover { transform: rotate(15deg); }
+
+.chat-messages {
+    flex: 1; padding: 20px; overflow-y: auto;
+    display: flex; flex-direction: column; gap: 15px;
+}
+
+/* Bolhas de Mensagem */
+.msg { max-width: 85%; padding: 12px 16px; border-radius: 15px; font-size: 14px; line-height: 1.4; animation: popIn 0.3s ease; }
+.msg-bot { background: var(--bot-msg-bg); color: var(--branco); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid var(--vidro-borda); }
+.msg-user { background: var(--user-msg-bg); color: var(--branco); align-self: flex-end; border-bottom-right-radius: 2px; text-align: right; }
+
+@keyframes popIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Área de Input */
+.chat-input-area { padding: 20px; border-top: 1px solid var(--vidro-borda); min-height: 80px; display: flex; flex-direction: column; gap: 10px; }
+
+/* Elementos de Interação do Chat */
+.btn-card {
+    background: rgba(255,255,255,0.1); border: 1px solid var(--azul-claro);
+    color: var(--branco); padding: 10px; border-radius: 8px;
+    cursor: pointer; transition: all 0.3s; margin-bottom: 5px; text-align: center;
+}
+.btn-card:hover { background: var(--azul-claro); color: #000; box-shadow: 0 0 15px var(--azul-claro); }
+
+input.chat-field, textarea.chat-area {
+    width: 100%; padding: 10px; border-radius: 8px; border: none;
+    background: rgba(255,255,255,0.2); color: var(--branco);
+}
+input.chat-field::placeholder { color: rgba(255,255,255,0.6); }
+
+/* Checkboxes estilizados */
+.checkbox-group { display: flex; flex-direction: column; gap: 5px; max-height: 150px; overflow-y: auto; }
+.check-item { display: flex; align-items: center; gap: 10px; color: var(--branco); font-size: 13px; padding: 5px; background: rgba(0,0,0,0.1); border-radius: 5px; cursor: pointer; }
+.check-item input { accent-color: var(--azul-escuro); }
+
+/* Lado Direito (Script) */
+.script-panel {
+    flex: 1; /* Ocupa o resto */
+    background: #f4f4f4; /* Página branca conforme pedido */
+    color: #333;
+    padding: 40px;
+    display: none; /* Começa escondido */
+    opacity: 0;
+    transition: opacity 1s;
+    overflow-y: auto;
+}
+.app-container.expanded .script-panel { display: block; opacity: 1; }
+
+.script-content h2 { color: #888; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin-bottom: 20px; }
